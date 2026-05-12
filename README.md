@@ -60,6 +60,54 @@ export NOTIFY_API_URL=http://localhost:4000
 ./notify read   --id=<notification-id>
 ```
 
+## Running with Docker
+
+The repo ships with a `docker-compose.yml` that boots PostgreSQL and the Encore
+backend together, plus a separate `Dockerfile` for the CLI that builds the
+`notify` binary inside an image.
+
+### 1. Configure environment
+
+```bash
+cp .env.example .env
+# then edit .env and set POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
+```
+
+### 2. Start Postgres + backend
+
+```bash
+docker compose up --build
+```
+
+The `db` service has a `pg_isready` healthcheck, so the `backend` container
+won't start until Postgres is accepting connections. The API is exposed on
+host port **4000**.
+
+### 3. Use the CLI container against the running backend
+
+Build the CLI image once:
+
+```bash
+docker build -t spare-notify-cli ./cli
+```
+
+Then run any command (the `notify` binary is the image's entrypoint, so you
+just pass arguments). `--network=host` lets the container reach the backend
+on `localhost:4000`:
+
+```bash
+docker run --rm --network=host spare-notify-cli users list
+docker run --rm --network=host spare-notify-cli send \
+  --user-id=<id> --channel=in_app --title="Hi" --body="Hello"
+```
+
+If you'd rather point at a different host, set `NOTIFY_API_URL`:
+
+```bash
+docker run --rm -e NOTIFY_API_URL=http://host.docker.internal:4000 \
+  spare-notify-cli users list
+```
+
 ## Architecture & Choices
 
 **Encore.ts** was chosen as the backend framework because it provides zero-config
