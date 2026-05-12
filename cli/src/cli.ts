@@ -15,6 +15,13 @@ program
     (url) => {
       process.env.NOTIFY_API_URL = url;
     }
+  )
+  .option(
+    "--api-key <key>",
+    "API key sent as the X-API-Key header (overrides NOTIFY_API_KEY env var)",
+    (key) => {
+      process.env.NOTIFY_API_KEY = key;
+    }
   );
 
 registerUserCommands(program);
