@@ -1,0 +1,8 @@
+{
+  "name": "spare-notify-backend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "encore.dev": "^1.57.4"
+  }
+}

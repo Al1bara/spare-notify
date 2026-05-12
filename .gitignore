@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+cli/notify
+cli/notify.exe
+
+# Encore generated/local state
+backend/.encore/
+backend/encore.gen/
+
+# Bun
+bun.lockb
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Local Claude state
+.claude/
